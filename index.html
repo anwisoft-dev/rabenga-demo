@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>rabenga.de</title>
+
+  <style>
+    :root {
+      --wallpaper: url("background.webp");
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont,
+               "Helvetica Neue", Helvetica,
+               "Segoe UI", Arial,
+               system-ui, sans-serif;
+    }
+
+    body {
+      background-image: var(--wallpaper);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-color: #0b0f1a;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      /* Platz für den fixed Header */
+      box-sizing: border-box;
+    }
+
+    /* ===== MODERNER FULL-WIDTH TITEL ===== */
+    .titlebar{
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 20;
+
+      padding: 18px 24px;
+
+      /* 50% schwarz transparent */
+      background: rgba(0,0,0,0.5);
+
+      /* modern: Glass/Frosted Effekt */
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .titlebar__title{
+      margin: 0;
+      color: #fff;
+      font-size: 60px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      line-height: 1.05;
+      text-align: center;
+      text-shadow: 0 8px 30px rgba(0,0,0,0.45);
+    }
+
+    /* ZENTRALER CONTAINER */
+    .center {
+      min-height: 100vh;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+    }
+
+    /* Logo */
+    .logo {
+      width: 80vw;
+      max-width: 200px;
+      height: auto;
+    }
+
+    .logoVideo{
+      width: 80vw;
+      max-width: 650px;
+      height: auto;
+      display: block;
+    }
+
+    /* Button */
+    .btn {
+      padding: 12px 18px;
+      border-radius: 12px;
+      border: 0;
+      cursor: pointer;
+      font-size: 16px;
+      background: rgba(255,255,255,0.9);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    }
+
+    /* QR Code */
+    .qr{
+      width: 135px;
+      max-width: 50vw;
+      height: auto;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.9);
+      padding: 10px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    }
+
+    /* BOTTOM RIGHT CONTAINER */
+    .corner {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+
+      z-index: 10;
+    }
+
+    /* Mobile Anpassung */
+    @media (max-width: 600px) {
+      .corner {
+        right: 12px;
+        bottom: 12px;
+      }
+
+      .qr {
+        width: 120px;
+      }
+
+      .btn {
+        font-size: 14px;
+        padding: 10px 14px;
+      }
+
+      /* Titel responsive */
+      .titlebar__title{
+        font-size: 34px;
+      }
+
+      /* weniger Platz oben auf mobile */
+      body{
+        padding-top: 85px;
+      }
+    }
+    .contact{
+  text-align: center;
+  font-style: normal;          /* address ist sonst kursiv */
+  color: #000000;
+  margin: 0;
+}
+
+.contact__name{
+  font-size: 44px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  margin-top: 6px;
+  text-shadow: 0 8px 30px rgba(0,0,0,0.45);
+}
+
+.contact__line{
+  display: block;
+  margin-top: 6px;
+  font-size: 22px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.92);
+  text-decoration: none;
+  text-shadow: 0 8px 30px rgba(0,0,0,0.45);
+}
+
+.contact__line:hover{
+  text-decoration: underline;
+}
+
+@media (max-width: 600px){
+  .contact__name{ font-size: 18px; }
+  .contact__line{ font-size: 15px; }
+}
+  </style>
+</head>
+
+<body>
+  <!-- FULL WIDTH TITEL -->
+  <header class="titlebar" aria-label="Seiten-Titel">
+    <h1 class="titlebar__title">Rabenga Worldwide</h1>
+  </header>
+
+  <!-- ZENTRIERTER CONTENT -->
+  <div class="center">
+    <video class="logoVideo"
+       autoplay
+       muted
+       loop
+       playsinline
+       preload="auto"
+       aria-label="Rabenga Logo Animation">
+  <source src="logo.webm" type="video/webm">
+</video>
+  <address class="contact" aria-label="Kontakt">
+    <div class="contact__name">Sven Bartels</div>
+
+    <a class="contact__line" href="tel:+491773130052">+49 177 313 00 52</a>
+    <a class="contact__line" href="mailto:mail@rabenga.de">mail@rabenga.de</a>
+  </address>
+  </div>
+  
+  <!-- FIXED BOTTOM RIGHT -->
+  <div class="corner">
+    <img src="qrcode.png" alt="QR Code" class="qr" />
+    <button id="addContactBtn" class="btn">vCard download</button>
+  </div>
+
+<script>
+  const contact = {
+    firstName: "Sven",
+    lastName: "Bartels",
+    phone: "+49 177 313 00 52",
+    email: "mail@rabenga.de",
+    company: "Rabenga",
+    website: "rabenga.de"
+  };
+
+  function buildVCard(c) {
+    return [
+      "BEGIN:VCARD",
+      "VERSION:3.0",
+      `N:${c.lastName};${c.firstName};;;`,
+      `FN:${c.firstName} ${c.lastName}`,
+      c.company ? `ORG:${c.company}` : "",
+      c.phone ? `TEL;TYPE=CELL:${c.phone}` : "",
+      c.email ? `EMAIL;TYPE=INTERNET:${c.email}` : "",
+      c.website ? `URL:${c.website}` : "",
+      "END:VCARD"
+    ].filter(Boolean).join("\r\n");
+  }
+
+  document.getElementById("addContactBtn").addEventListener("click", () => {
+    const vcf = buildVCard(contact);
+    const blob = new Blob([vcf], { type: "text/vcard;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${contact.firstName}_${contact.lastName}.vcf`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  });
+</script>
+</body>
+</html>
