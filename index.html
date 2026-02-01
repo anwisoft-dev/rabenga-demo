@@ -2,40 +2,50 @@
 <html lang="de">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>rabenga.de</title>
 
   <style>
-    :root {
+    :root{
       --wallpaper: url("background.webp");
+      --pad: 24px;
+      --radius: 16px;
+      --card-bg: rgba(255,255,255,0.9);
+      --shadow: 0 10px 30px rgba(0,0,0,0.25);
     }
 
-    html, body {
+    *{ box-sizing: border-box; }
+
+    html, body{
       height: 100%;
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont,
-               "Helvetica Neue", Helvetica,
-               "Segoe UI", Arial,
-               system-ui, sans-serif;
+        "Helvetica Neue", Helvetica, "Segoe UI", Arial,
+        system-ui, sans-serif;
     }
 
-    body {
+    body{
       background-image: var(--wallpaper);
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
-      background-attachment: fixed;
       background-color: #0b0f1a;
+
+      /* iOS/Android: fixed background oft buggy -> mobile override unten */
+      background-attachment: fixed;
 
       display: flex;
       align-items: center;
       justify-content: center;
 
-      /* Platz für den fixed Header */
-      box-sizing: border-box;
+      /* Platz für fixed Header + safe area */
+      padding-top: calc(92px + env(safe-area-inset-top));
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
+      padding-bottom: env(safe-area-inset-bottom);
     }
 
-    /* ===== MODERNER FULL-WIDTH TITEL ===== */
+    /* ===== HEADER ===== */
     .titlebar{
       position: fixed;
       top: 0;
@@ -43,229 +53,198 @@
       right: 0;
       z-index: 20;
 
-      padding: 18px 24px;
+      padding: 18px var(--pad);
+      padding-top: calc(18px + env(safe-area-inset-top));
 
-      /* 50% schwarz transparent */
-      background: rgba(0,0,0,0);
+      background: rgba(0,0,0,0); /* so wie bei dir */
+      pointer-events: none; /* verhindert, dass der Header Touch blockiert */
     }
 
     .titlebar__title{
       margin: 0;
       color: #fff;
-      font-size: 60px;
       font-weight: 700;
       letter-spacing: 0.02em;
       line-height: 1.05;
       text-align: center;
-      text-shadow: 0 8px 30px rgba(0,0,0,0.45); 
+      text-shadow: 0 8px 30px rgba(0,0,0,0.45);
+
+      /* Responsive ohne harte Sprünge */
+      font-size: clamp(28px, 6vw, 60px);
     }
 
-    /* ZENTRALER CONTAINER */
-    .center {
-      min-height: 100vh;
-
+    /* ===== CENTER ===== */
+    .center{
+      width: min(92vw, 520px);
+      min-height: 100dvh; /* besser als 100vh auf Mobile */
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 0;
+      gap: 10px;
+      text-align: center;
     }
 
-    /* Logo */
-.logoImage {
-  width: 240px;
-  height: auto;
-  display: block;
-}
-
-
-
-    .logoVideo{
-      width: 80vw;
-      max-width: 275px;
+    .logoImage{
+      width: clamp(180px, 55vw, 240px);
       height: auto;
       display: block;
     }
 
-    /* Button */
-    .btn {
-      padding: 12px 18px;
-      border-radius: 12px;
-      border: 0;
-      cursor: pointer;
-      font-size: 16px;
-      background: rgba(255,255,255,0.9);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    .contact{
+      text-align: center;
+      font-style: normal;
+      margin: 0;
     }
 
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-    }
-    /* Contact*/
-    .con{
-      width: 135px;
-      max-width: 50vw;
-      height: auto;
-      border-radius: 16px;
-      background: rgba(255,255,255,0.9);
-      padding: 10px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    .contact__name{
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      margin-top: 8px;
+      color: #ffffff;
+      text-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+
+      /* vorher: 40px am Desktop, aber auf mobile war 13px zu klein */
+      font-size: clamp(18px, 4.5vw, 40px);
     }
 
-    /* QR Code */
-    .qr{
-      width: 135px;
-      max-width: 50vw;
-      height: auto;
-      border-radius: 16px;
-      background: rgba(255,255,255,0.9);
-      padding: 10px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-    }
-
-    /* BOTTOM RIGHT CONTAINER */
-    .corner {
+    /* ===== CORNER (bottom-right) ===== */
+    .corner{
       position: fixed;
-      right: 24px;
-      bottom: 24px;
+      right: var(--pad);
+      bottom: var(--pad);
+      z-index: 10;
 
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 12px;
 
-      z-index: 10;
+      /* iPhone safe area (Home Bar) */
+      bottom: calc(var(--pad) + env(safe-area-inset-bottom));
+      right: calc(var(--pad) + env(safe-area-inset-right));
     }
 
-    /* Mobile Anpassung */
-    @media (max-width: 600px) {
-      .corner {
-        right: 12px;
-        bottom: 12px;
-      }
+    .con, .qr{
+      width: 135px;
+      max-width: 42vw; /* etwas kleiner, damit’s auf kleine Geräte passt */
+      height: auto;
+      border-radius: var(--radius);
+      background: var(--card-bg);
+      padding: 10px;
+      box-shadow: var(--shadow);
+    }
 
-      .qr {
-        width: 120px;
-      }
+    .btn{
+      width: 100%;
+      min-height: 44px;              /* Touch-friendly */
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 0;
+      cursor: pointer;
+      font-size: 16px;
+      background: rgba(255,255,255,0.92);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-      .btn {
-        font-size: 14px;
-        padding: 10px 14px;
-      }
+    .btn:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    }
 
-      /* Titel responsive */
-      .titlebar__title{
-        font-size: 34px;
-      }
+    /* ===== MOBILE OPTIMIERUNG ===== */
+    @media (max-width: 600px){
+      :root{ --pad: 12px; }
 
-      /* weniger Platz oben auf mobile */
       body{
-        padding-top: 85px;
+        /* fixed background deaktivieren -> flüssiger + weniger Bugs */
+        background-attachment: scroll;
+        padding-top: calc(78px + env(safe-area-inset-top));
+      }
+
+      .corner{
+        gap: 10px;
+      }
+
+      .con, .qr{
+        width: 116px;
+        padding: 8px;
+      }
+
+      .btn{
+        font-size: 14px;
       }
     }
-    .contact{
-  text-align: center;
-  font-style: normal;          /* address ist sonst kursiv */
-  color: #000000;
-  margin: 0;
-}
 
-.contact__name{
-  font-size: 40px;
-  font-weight: 700;
-  letter-spacing: 0.01em;
-  margin-top: 6px;
-  color: #ffffff;
-  text-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
-}
-
-.contact__line{
-  display: block;
-  margin-top: 6px;
-  font-size: 22px;
-  font-weight: 500;
-  color: #000000eb;
-  text-decoration: none;
-  text-shadow: 0 8px 30px rgba(0,0,0,0.45);
-}
-
-.contact__line:hover{
-  text-decoration: underline;
-}
-
-@media (max-width: 600px){
-  .contact__name{ font-size: 13px; }
-  .contact__line{ font-size: 15px; }
-}
+    /* Optional: Wenn du auf sehr kleinen Höhen bist (z.B. landscape Handy),
+       dann corner nach unten “zusammenstauchen” */
+    @media (max-height: 520px){
+      .con, .qr{ display: none; }
+    }
   </style>
 </head>
 
 <body>
-  <!-- FULL WIDTH TITEL -->
   <header class="titlebar" aria-label="Seiten-Titel">
     <h1 class="titlebar__title">Rabenga</h1>
   </header>
 
-  <!-- ZENTRIERTER CONTENT -->
-<div class="center">
-  <img
-    src="logo.png"
-    class="logoImage"
-    alt="Rabenga Logo Animation"
-    aria-label="Rabenga Logo Animation"
-    loading="eager"
-  >
-  <address class="contact" aria-label="Kontakt">
-    <div class="contact__name">Sven Bartels</div>
-  </address>
-</div>
+  <div class="center">
+    <img
+      src="logo.png"
+      class="logoImage"
+      alt="Rabenga Logo"
+      loading="eager"
+    >
+    <address class="contact" aria-label="Kontakt">
+      <div class="contact__name">Sven Bartels</div>
+    </address>
+  </div>
 
-  
-  <!-- FIXED BOTTOM RIGHT -->
   <div class="corner">
-    <img src="contact.webp" alt="QR Code" class="con" />
+    <img src="contact.webp" alt="Contact" class="con" />
     <img src="qrcode.png" alt="QR Code" class="qr" />
     <button id="addContactBtn" class="btn">Add to Contacts</button>
   </div>
 
-<script>
-  const contact = {
-    firstName: "Sven",
-    lastName: "Bartels",
-    phone: "+49 177 313 00 52",
-    email: "mail@rabenga.de",
-    company: "Rabenga",
-    website: "rabenga.de"
-  };
+  <script>
+    const contact = {
+      firstName: "Sven",
+      lastName: "Bartels",
+      phone: "+49 177 313 00 52",
+      email: "mail@rabenga.de",
+      company: "Rabenga",
+      website: "rabenga.de"
+    };
 
-  function buildVCard(c) {
-    return [
-      "BEGIN:VCARD",
-      "VERSION:3.0",
-      `N:${c.lastName};${c.firstName};;;`,
-      `FN:${c.firstName} ${c.lastName}`,
-      c.company ? `ORG:${c.company}` : "",
-      c.phone ? `TEL;TYPE=CELL:${c.phone}` : "",
-      c.email ? `EMAIL;TYPE=INTERNET:${c.email}` : "",
-      c.website ? `URL:${c.website}` : "",
-      "END:VCARD"
-    ].filter(Boolean).join("\r\n");
-  }
+    function buildVCard(c) {
+      return [
+        "BEGIN:VCARD",
+        "VERSION:3.0",
+        `N:${c.lastName};${c.firstName};;;`,
+        `FN:${c.firstName} ${c.lastName}`,
+        c.company ? `ORG:${c.company}` : "",
+        c.phone ? `TEL;TYPE=CELL:${c.phone}` : "",
+        c.email ? `EMAIL;TYPE=INTERNET:${c.email}` : "",
+        c.website ? `URL:${c.website}` : "",
+        "END:VCARD"
+      ].filter(Boolean).join("\r\n");
+    }
 
-  document.getElementById("addContactBtn").addEventListener("click", () => {
-    const vcf = buildVCard(contact);
-    const blob = new Blob([vcf], { type: "text/vcard;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
+    document.getElementById("addContactBtn").addEventListener("click", () => {
+      const vcf = buildVCard(contact);
+      const blob = new Blob([vcf], { type: "text/vcard;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
 
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${contact.firstName}_${contact.lastName}.vcf`;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
-  });
-</script>
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${contact.firstName}_${contact.lastName}.vcf`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    });
+  </script>
 </body>
 </html>
