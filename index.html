@@ -153,19 +153,27 @@
       box-shadow: 0 8px 20px rgba(0,0,0,0.25);
     }
 
-    /* ===== MOBILE OPTIMIERUNG ===== */
-    @media (max-width: 600px){
-        :root{
+@media (max-width: 600px){
+  :root{
     --wallpaper: url("background_mobil.webp");
   }
-      body{
-        /* fixed background deaktivieren -> flüssiger + weniger Bugs */
-        background-attachment: scroll;
-        padding-top: calc(78px + env(safe-area-inset-top));
-      }
+
+  body{
+    /* fixed background deaktivieren -> flüssiger + weniger Bugs */
+    background-attachment: scroll;
+    padding-top: calc(78px + env(safe-area-inset-top));
+  }
+
+  /* QR-Code auf Mobile ausblenden */
   .qr{
     display: none;
   }
+
+  /* Titel auf Mobile ca. +40 % größer */
+  .titlebar__title{
+    font-size: clamp(40px, 8.5vw, 84px);
+  }
+}
 .logoImage{
     width: clamp(140px, 45vw, 180px);
 
