@@ -46,13 +46,7 @@
       padding: 18px 24px;
 
       /* 50% schwarz transparent */
-      background: rgba(0,0,0,0.5);
-
-      /* modern: Glass/Frosted Effekt */
-      -webkit-backdrop-filter: blur(12px);
-      backdrop-filter: blur(12px);
-
-      border-bottom: 1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0);
     }
 
     .titlebar__title{
@@ -63,7 +57,7 @@
       letter-spacing: 0.02em;
       line-height: 1.05;
       text-align: center;
-      text-shadow: 0 8px 30px rgba(0,0,0,0.45);
+      text-shadow: 0 8px 30px rgba(0,0,0,0.45); 
     }
 
     /* ZENTRALER CONTAINER */
@@ -78,15 +72,17 @@
     }
 
     /* Logo */
-    .logo {
-      width: 80vw;
-      max-width: 200px;
-      height: auto;
-    }
+.logoImage {
+  width: 240px;
+  height: auto;
+  display: block;
+}
+
+
 
     .logoVideo{
       width: 80vw;
-      max-width: 650px;
+      max-width: 275px;
       height: auto;
       display: block;
     }
@@ -105,6 +101,16 @@
     .btn:hover {
       transform: translateY(-2px);
       box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    }
+    /* Contact*/
+    .con{
+      width: 135px;
+      max-width: 50vw;
+      height: auto;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.9);
+      padding: 10px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
     }
 
     /* QR Code */
@@ -166,11 +172,12 @@
 }
 
 .contact__name{
-  font-size: 44px;
+  font-size: 40px;
   font-weight: 700;
   letter-spacing: 0.01em;
   margin-top: 6px;
-  text-shadow: 0 8px 30px rgba(0,0,0,0.45);
+  color: #ffffff;
+  text-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
 }
 
 .contact__line{
@@ -178,7 +185,7 @@
   margin-top: 6px;
   font-size: 22px;
   font-weight: 500;
-  color: rgba(0, 0, 0, 0.92);
+  color: #000000eb;
   text-decoration: none;
   text-shadow: 0 8px 30px rgba(0,0,0,0.45);
 }
@@ -188,7 +195,7 @@
 }
 
 @media (max-width: 600px){
-  .contact__name{ font-size: 18px; }
+  .contact__name{ font-size: 13px; }
   .contact__line{ font-size: 15px; }
 }
   </style>
@@ -197,32 +204,29 @@
 <body>
   <!-- FULL WIDTH TITEL -->
   <header class="titlebar" aria-label="Seiten-Titel">
-    <h1 class="titlebar__title">Rabenga Worldwide</h1>
+    <h1 class="titlebar__title">Rabenga</h1>
   </header>
 
   <!-- ZENTRIERTER CONTENT -->
-  <div class="center">
-    <video class="logoVideo"
-       autoplay
-       muted
-       loop
-       playsinline
-       preload="auto"
-       aria-label="Rabenga Logo Animation">
-  <source src="logo.webm" type="video/webm">
-</video>
+<div class="center">
+  <img
+    src="logo.png"
+    class="logoImage"
+    alt="Rabenga Logo Animation"
+    aria-label="Rabenga Logo Animation"
+    loading="eager"
+  >
   <address class="contact" aria-label="Kontakt">
     <div class="contact__name">Sven Bartels</div>
-
-    <a class="contact__line" href="tel:+491773130052">+49 177 313 00 52</a>
-    <a class="contact__line" href="mailto:mail@rabenga.de">mail@rabenga.de</a>
   </address>
-  </div>
+</div>
+
   
   <!-- FIXED BOTTOM RIGHT -->
   <div class="corner">
+    <img src="contact.webp" alt="QR Code" class="con" />
     <img src="qrcode.png" alt="QR Code" class="qr" />
-    <button id="addContactBtn" class="btn">vCard download</button>
+    <button id="addContactBtn" class="btn">Add to Contacts</button>
   </div>
 
 <script>
